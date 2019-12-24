@@ -149,4 +149,19 @@ class StringContract {
 
         }
     }
+
+    class ListenerName {
+
+        companion object {
+
+            val MESSAGE_LISTENER = "message_listener"
+
+            val USER_LISTENER = "user_listener"
+
+            val GROUP_EVENT_LISTENER = "group_event_listener"
+
+            val CALL_EVENT_LISTENER = "call_event_listener"
+        }
+
+    }
     }

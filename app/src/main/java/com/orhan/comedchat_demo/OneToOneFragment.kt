@@ -3,6 +3,7 @@ package com.orhan.comedchat_demo
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.cometchat.pro.core.CometChat
 import com.orhan.comedchat_demo.databinding.FragmentContactDetailBinding
+import com.orhan.comedchat_demo.StringContract.ListenerName.Companion.MESSAGE_LISTENER
 import kotlin.coroutines.CoroutineContext
 import androidx.lifecycle.Observer
 import com.cometchat.pro.constants.CometChatConstants
@@ -49,7 +51,15 @@ class OneToOneFragment: Fragment(),View.OnClickListener {
     companion object {
 
         var scrollFlag: Boolean = true
+        var currentId: String? = null
+        private val TAG = "OneToOneFragment"
     }
+
+    override fun onStart() {
+        super.onStart()
+        currentId = userId
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_contact_detail, container, false)
@@ -72,6 +82,17 @@ class OneToOneFragment: Fragment(),View.OnClickListener {
 
         binding.recycler.adapter = oneToOneAdapter
 
+        binding.rlMain.viewTreeObserver.addOnGlobalLayoutListener {
+            val heightDiff = binding.rlMain.rootView.height - binding.rlMain.height
+            try {
+
+                if (heightDiff > CommonUtil.dpToPx(SaudiChatPro.applicationContext(), 200f)) {
+                    binding.recycler.scrollToPosition(oneToOneAdapter.itemCount - 1)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         binding.cometchatToolbar.setBackgroundColor(StringContract.Color.primaryColor)
 
@@ -114,7 +135,14 @@ class OneToOneFragment: Fragment(),View.OnClickListener {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: ")
+        currentId = userId
+        onetoOneViewModel.receiveMessageListener(MESSAGE_LISTENER, ownerId)
+        onetoOneViewModel.addPresenceListener(StringContract.ListenerName.USER_LISTENER)
 
+   }
     private fun scrollBottom() {
         binding.recycler.scrollToPosition(oneToOneAdapter.itemCount - 1)
     }
