@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">comedchat_demo</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="type_your_message">Type your message</string>
+
+</resources>
