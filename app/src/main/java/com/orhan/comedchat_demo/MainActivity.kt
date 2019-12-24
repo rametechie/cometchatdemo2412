@@ -17,8 +17,15 @@ class MainActivity : AppCompatActivity() {
     private val TAG="MainActivity"
     var resId: Int = 0
 
-    override fun onResume() {
-        super.onResume()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
+
+//        val edt_msg = findViewById(R.id.message) as EditText
+//        val send_btn = findViewById(R.id.send) as Button
+
         resId = R.id.main_frame
         val oneToOneFragment = OneToOneFragment().apply {
             arguments = Bundle().apply {
@@ -33,20 +40,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(resId, oneToOneFragment).addToBackStack(null).commit()
 //        send_btn.setOnClickListener {
-//            //            val text = edt_msg.text
+////            val text = edt_msg.text
 //            sendMessage(edt_msg.text.toString())
 //
 //        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-
-//        val edt_msg = findViewById(R.id.message) as EditText
-//        val send_btn = findViewById(R.id.send) as Button
-
-
 
         onLoginClick("superhero10")
     }
